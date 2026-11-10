@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { extractJsonResponse } from './repair-contract.mjs';
 
-const root = resolve(import.meta.dirname ?? new URL('..', import.meta.url).pathname, '..');
+const root = resolve(new URL('../', import.meta.url).pathname);
 const source = await readFile(resolve(root, 'src/main.jsx'), 'utf8');
 const brokenStart = source.indexOf('function BrokenForm()');
 const brokenEnd = source.indexOf('\nfunction RepairedForm()', brokenStart);
