@@ -1,14 +1,18 @@
 # FormForge AI
 
-**Mission:** Repair broken web forms, verify functional and accessibility improvements, and eventually deliver approved source-code pull requests.
+FormForge repairs web forms and independently tests whether the repaired workflow works.
 
-## First vertical slice: benchmark case 001
+## Current scope
 
-This PR adds a deliberately broken scholarship application and a hand-authored reference repair. The broken baseline lacks accessible field names and has an inert submit button. The repaired reference labels the controls, uses native HTML validation, and implements actual client-side submission confirmation.
+- **Broken baseline:** a React scholarship application with unnamed fields and a nonworking submit button.
+- **Reference repair:** manually written working form, used as a control.
+- **Model candidate:** an OpenAI API model reads the broken JSX and generates a **strictly validated JSON form-repair artifact**, not executable JavaScript.
+- **Safe renderer:** approved field identifiers and values are rendered into working React controls, including labels, native validation, and submission confirmation.
+- **Verification:** unit tests reject malformed or unauthorized artifacts; Playwright + axe-core test the generated form in a browser.
 
-**Important:** The reference repair is NOT AI-generated. This milestone proves the testing harness before implementing AI code modification.
+The model chooses form semantics and labels; the renderer supplies predefined functional behavior. This is a limited single-fixture repair proof of concept, **not a general-purpose source-code patcher**, GitHub PR agent, backend submission integration, or full WCAG certification. Successful local client-side submission does not persist an application on a server.
 
-### Run locally
+## Start
 
 ```bash
 npm install
@@ -16,17 +20,26 @@ npx playwright install chromium
 npm run dev
 ```
 
-Open `/?variant=broken` or `/?variant=repaired`.
+Open `/?variant=broken`, `/?variant=repaired`, and `/?variant=candidate`.
 
-### Reproduce verification
+## Generate a real AI candidate
 
 ```bash
+export OPENAI_API_KEY=... # local environment only; never commit secrets
+npm run repair
 npm run build
+npm run test:contract
 npm test
 ```
 
-Playwright checks known defects in the baseline, zero violations for the reference against the configured automated axe-core WCAG 2 A/AA and 2.1 A/AA tags, and a working keyboard-driven form submission. These checks do **not** establish complete WCAG conformance or guarantee accessibility for all assistive technologies.
+The generator reads only the known broken component from `src/main.jsx`, sends that excerpt to the API, validates an allowlisted schema, and writes `public/repair-candidate.json`. The JSON is ignored by git. The model's output cannot add fields, callbacks, scripts, arbitrary URLs, or new code through this interface. The candidate page uses fixed React behavior.
 
-### Next increment
+In CI, `CI=true npm run repair -- --mock=known` uses a **handwritten test fixture**, never an AI response. This proves the pipeline and browser oracle, not model success. Real model runs require an API key and independent, documented execution.
 
-Add an AI patch generator operating on a user-authorized, isolated checkout; constrain write paths; test every candidate against this benchmark; reject regressions; and require explicit approval before opening a PR. Do not run untrusted repository scripts with production credentials.
+## Security boundary
+
+Do not ingest arbitrary external repositories, execute untrusted code, or commit model output without isolated workers and human review. For this milestone, the model receives an explicitly limited source excerpt and produces data, not executable code. The OpenAI API receives the excerpt, so use only authorized nonsecret code.
+
+## Next milestone
+
+Benchmark several independently constructed broken forms; record genuine model run outcomes versus deterministic controls. Only after this gate should we build isolated repository editing and approved GitHub pull requests.
