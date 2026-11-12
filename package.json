@@ -10,7 +10,9 @@
     "test": "playwright test",
     "repair": "node scripts/repair.mjs",
     "test:contract": "node --test tests/repair-contract.test.mjs",
-    "test:all": "npm run test:contract && npm test"
+    "test:all": "npm run test:contract && npm run test:benchmark && npm test",
+    "benchmark": "node scripts/benchmark.mjs",
+    "test:benchmark": "node --test tests/benchmark.test.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.7.0",
