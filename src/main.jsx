@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
+import CandidateForm from './CandidateForm.jsx';
 
 function BrokenForm() {
   const [status, setStatus] = useState('');
@@ -38,13 +39,15 @@ function RepairedForm() {
 }
 
 function App() {
-  const repaired = new URLSearchParams(window.location.search).get('variant') === 'repaired';
+  const variant = new URLSearchParams(window.location.search).get('variant');
+  const repaired = variant === 'repaired';
+  const candidate = variant === 'candidate';
   return <main className="layout">
     <header><div className="brand">✳ FormForge <span>AI</span></div><p className="muted">Verified form repair · benchmark case 001</p></header>
-    <div className="hero"><h1>{repaired ? 'A form that works.' : 'A form that blocks people.'}</h1><p>One reproducible defect case. One inspectable reference repair. Browser tests verify the difference.</p></div>
-    {repaired ? <RepairedForm /> : <BrokenForm />}
-    <nav aria-label="Benchmark variants"><a href="/?variant=broken">Broken baseline</a><a href="/?variant=repaired">Reference repair</a></nav>
-    <footer>Reference repair is hand-authored; automated AI repair is not implemented yet.</footer>
+    <div className="hero"><h1>{candidate ? 'A repair candidate to verify.' : repaired ? 'A form that works.' : 'A form that blocks people.'}</h1><p>One reproducible defect case. One inspectable reference repair. Browser tests verify the difference.</p></div>
+    {candidate ? <CandidateForm /> : repaired ? <RepairedForm /> : <BrokenForm />}
+    <nav aria-label="Benchmark variants"><a href="/?variant=broken">Broken baseline</a><a href="/?variant=repaired">Reference repair</a><a href="/?variant=candidate">AI candidate</a></nav>
+    <footer>Reference repair is hand-authored; candidate artifacts require independent verification.</footer>
   </main>;
 }
 createRoot(document.getElementById('root')).render(<App />);

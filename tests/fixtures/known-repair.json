@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "formTitle": "Scholarship application",
+  "fields": [
+    {
+      "name": "fullName",
+      "label": "Full name",
+      "type": "text",
+      "required": true,
+      "options": null
+    },
+    {
+      "name": "email",
+      "label": "Email address",
+      "type": "email",
+      "required": true,
+      "options": null
+    },
+    {
+      "name": "program",
+      "label": "Program",
+      "type": "select",
+      "required": true,
+      "options": [
+        {
+          "value": "engineering",
+          "label": "Engineering"
+        }
+      ]
+    }
+  ],
+  "submitLabel": "Submit application",
+  "successMessage": "Application submitted successfully."
+}

@@ -1,4 +1,4 @@
-name: Verify reference form
+name: Verify form repair
 on:
   pull_request:
   push:
@@ -14,5 +14,8 @@ jobs:
       - run: npm install --package-lock-only
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - run: npm run test:contract
+      - name: Generate deterministic test fixture (NOT an AI response)
+        run: CI=true npm run repair -- --mock=known
       - run: npm run build
       - run: npm test
