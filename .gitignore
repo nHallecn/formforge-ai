@@ -8,3 +8,6 @@ test-results/
 
 # Generated, unreviewed candidate artifact
 public/repair-candidate.json
+
+# Live benchmark metadata (never imply local outputs are audited)
+benchmark-results/
