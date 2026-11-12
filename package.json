@@ -7,7 +7,10 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "test": "playwright test"
+    "test": "playwright test",
+    "repair": "node scripts/repair.mjs",
+    "test:contract": "node --test tests/repair-contract.test.mjs",
+    "test:all": "npm run test:contract && npm test"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.7.0",
