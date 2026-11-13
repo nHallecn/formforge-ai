@@ -25,3 +25,11 @@ This is a limited semantic-label test, not a real-world repair success rate. Exa
 ## Go/no-go
 
 Do not claim general repair effectiveness or move to repository patch execution until multiple **live** model benchmark runs are recorded, reviewed for semantic grading limitations, and paired with browser validation. Candidate acceptance must remain human-reviewed.
+
+## Browser evidence (PR #4)
+
+The benchmark launches a temporary local Vite server and headless Chromium. Each live model candidate is injected as data into the existing fixed React renderer without writing it to tracked code. Every case records render success, associated labels, scoped axe violations, required fields, invalid-email rejection, and a keyboard-triggered client-side confirmation. External browser network requests are blocked. The result is accepted only if semantic-label grading and **all** browser checks pass.
+
+Run `npx playwright install chromium` first, then `npm run benchmark`. Without a key, `npm run test:browser` exercises the verifier using a hand-authored positive and negative candidate, **not** live AI.
+
+Limits: browser behavior largely comes from the trusted renderer, not from generated source code. This benchmark cannot demonstrate arbitrary React patching, safe deployment or actual backend form submission.
