@@ -1,0 +1,142 @@
+[
+  {
+    "id": "B01",
+    "name": "Scholarship application",
+    "source": "function BrokenForm() {\n return <form aria-label=\"Scholarship application\">\n  <h2>Scholarship application</h2>\n  <input name=\"fullName\" placeholder=\"Student legal name\" />\n  <input name=\"email\" placeholder=\"School email\" />\n  <select name=\"program\"><option value=\"engineering\">Engineering</option></select>\n  <button type=\"button\">Apply</button>\n </form>;\n}",
+    "expected": {
+      "fullName": "Legal name",
+      "email": "School email",
+      "program": "Study program"
+    },
+    "allowedSynonyms": {
+      "fullName": [
+        "full name",
+        "student name",
+        "student legal name",
+        "legal name"
+      ],
+      "email": [
+        "email",
+        "email address",
+        "school email",
+        "student email"
+      ],
+      "program": [
+        "program",
+        "study program",
+        "course",
+        "degree program"
+      ]
+    }
+  },
+  {
+    "id": "B02",
+    "name": "Volunteer registration",
+    "source": "function BrokenForm() {\n return <form>\n  <h2>Volunteer signup</h2>\n  <p>Provide your full name, contact email, and preferred volunteer track.</p>\n  <input name=\"fullName\" />\n  <input name=\"email\" />\n  <select name=\"program\"><option value=\"engineering\">Engineering</option></select>\n  <button type=\"button\">Join</button>\n </form>;\n}",
+    "expected": {
+      "fullName": "Full name",
+      "email": "Contact email",
+      "program": "Volunteer track"
+    },
+    "allowedSynonyms": {
+      "fullName": [
+        "full name",
+        "name",
+        "volunteer name"
+      ],
+      "email": [
+        "contact email",
+        "email",
+        "email address"
+      ],
+      "program": [
+        "volunteer track",
+        "track",
+        "preferred volunteer track",
+        "program"
+      ]
+    }
+  },
+  {
+    "id": "B03",
+    "name": "Workshop enrollment",
+    "source": "function BrokenForm() {\n return <form>\n  <h2>Workshop enrollment</h2>\n  <div>Participant name<input name=\"fullName\"/></div>\n  <div>Where can we email your confirmation?<input name=\"email\"/></div>\n  <div>Select learning track<select name=\"program\"><option value=\"engineering\">Engineering</option></select></div>\n  <button type=\"button\">Enroll</button>\n </form>;\n}",
+    "expected": {
+      "fullName": "Participant name",
+      "email": "Confirmation email",
+      "program": "Learning track"
+    },
+    "allowedSynonyms": {
+      "fullName": [
+        "participant name",
+        "name",
+        "full name"
+      ],
+      "email": [
+        "confirmation email",
+        "email",
+        "email address"
+      ],
+      "program": [
+        "learning track",
+        "track",
+        "program"
+      ]
+    }
+  },
+  {
+    "id": "B04",
+    "name": "Mentorship intake",
+    "source": "function BrokenForm() {\n return <form>\n  <h2>Mentor matching intake</h2>\n  <p>We need your name, email, and preferred mentorship program.</p>\n  <input name=\"fullName\" placeholder=\"Name as you want it displayed\"/>\n  <input name=\"email\" placeholder=\"Contact address\"/>\n  <select name=\"program\"><option value=\"engineering\">Engineering</option></select>\n  <button type=\"button\">Request mentor</button>\n </form>;\n}",
+    "expected": {
+      "fullName": "Display name",
+      "email": "Email address",
+      "program": "Mentorship program"
+    },
+    "allowedSynonyms": {
+      "fullName": [
+        "display name",
+        "name",
+        "full name",
+        "preferred name"
+      ],
+      "email": [
+        "email",
+        "email address",
+        "contact email"
+      ],
+      "program": [
+        "mentorship program",
+        "program",
+        "mentor program"
+      ]
+    }
+  },
+  {
+    "id": "B05",
+    "name": "Community event registration",
+    "source": "function BrokenForm() {\n return <form>\n  <h2>Community event RSVP</h2>\n  <p>Register an attendee with their name and email; choose a track.</p>\n  <input name=\"fullName\" aria-label=\"\" />\n  <input name=\"email\" placeholder=\"you@example.org\" />\n  <select name=\"program\"><option value=\"engineering\">Engineering</option></select>\n  <button type=\"button\">RSVP</button>\n </form>;\n}",
+    "expected": {
+      "fullName": "Attendee name",
+      "email": "Email address",
+      "program": "Event track"
+    },
+    "allowedSynonyms": {
+      "fullName": [
+        "attendee name",
+        "full name",
+        "name"
+      ],
+      "email": [
+        "email address",
+        "email",
+        "contact email"
+      ],
+      "program": [
+        "event track",
+        "track",
+        "program"
+      ]
+    }
+  }
+]
