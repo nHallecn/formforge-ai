@@ -18,5 +18,6 @@ jobs:
       - run: npm run test:benchmark
       - name: Generate deterministic test fixture (NOT an AI response)
         run: CI=true npm run repair -- --mock=known
+      - run: npm run test:browser
       - run: npm run build
       - run: npm test
