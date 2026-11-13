@@ -67,6 +67,9 @@ export async function verifyCandidateInBrowser(page, candidate, baseURL = 'http:
     if (await fullName.evaluate(node => node.validity.valueMissing) !== true) {
       throw Error('Missing required name was not blocked');
     }
+    if (await email.evaluate(node => node.required) !== true || await program.evaluate(node => node.required) !== true) {
+      throw Error('Email and program must be required');
+    }
     checks.required = true;
   } catch (error) { fail('required', error); }
 
