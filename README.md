@@ -54,3 +54,11 @@ OPENAI_API_KEY=... npm run benchmark  # five real model calls, with billing
 ```
 
 See [benchmark limitations](benchmarks/README.md). CI only exercises the handwritten fixture and evaluator, **never claims a live model score**. The benchmark does not prove arbitrary React form source editing, full accessibility, or backend submission.
+
+## Browser verification per live model candidate
+
+The live benchmark now loads **each** generated candidate in a fresh Chromium page using the fixed local React renderer. It records the outcomes of six independent checks: rendering, associated labels, axe accessibility scan, required validation, invalid-email rejection and keyboard-triggered confirmation. It blocks requests to external origins during testing. A candidate passes only when **both** semantic grading and the browser checks pass.
+
+`npm run test:browser` runs the verification oracle with a *handwritten fixture*, including a deliberately defective candidate. CI does not call the model. `npm run benchmark` runs real model calls, requires the API key and installed Chromium, and writes local evidence to the gitignored results directory.
+
+This is still **not** a source-code patcher; generated JSON configures trusted React code. The success message is client-side only and does not prove server persistence. Automated axe checks are not complete accessibility certification.
