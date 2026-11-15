@@ -62,3 +62,14 @@ The live benchmark now loads **each** generated candidate in a fresh Chromium pa
 `npm run test:browser` runs the verification oracle with a *handwritten fixture*, including a deliberately defective candidate. CI does not call the model. `npm run benchmark` runs real model calls, requires the API key and installed Chromium, and writes local evidence to the gitignored results directory.
 
 This is still **not** a source-code patcher; generated JSON configures trusted React code. The success message is client-side only and does not prove server persistence. Automated axe checks are not complete accessibility certification.
+
+## Review-only JSX source repair (next vertical slice)
+
+`src/fixtures/ScholarshipForm.jsx` is a deliberately broken standalone React component. `npm run source:patch` sends that authorized fixture to the configured AI model and validates the returned declarative repair. A deterministic React JSX code generator then creates **real source code**, a unified diff, and a hash-bound manifest under the gitignored `repair-artifacts/` directory.
+
+```bash
+OPENAI_API_KEY=... npm run source:patch
+npm run test:source
+```
+
+No generated patch is automatically applied or committed. The original source file is left intact. The script only supports the named fixture and refuses unexpected source preconditions, fields or model-supplied JavaScript. It checks JSX syntax using Vite's esbuild transformation. **Syntax validation is not browser verification:** the manifest deliberately marks `checks.browser=false` and `approved=false`. A separate browser-runner for this exact generated JSX and authorized apply/PR workflow are still outstanding. CI generates the patch with a handwritten fixture; it does not demonstrate live AI success.
