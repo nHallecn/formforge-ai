@@ -11,3 +11,6 @@ public/repair-candidate.json
 
 # Live benchmark metadata (never imply local outputs are audited)
 benchmark-results/
+
+# Review-only model patch output; may contain sensitive code
+repair-artifacts/
