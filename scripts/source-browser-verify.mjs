@@ -120,9 +120,12 @@ export async function verifyGeneratedSource({ root = rootDefault } = {}) {
     evidence = await withPreviewServer(async baseURL => {
       const browser = await chromium.launch({ headless: true });
       try {
-        const page = await browser.newPage();
-        try { return await checkGeneratedModule(page, baseURL); }
-        finally { await page.close(); }
+        const context = await browser.newContext();
+        try {
+          const page = await context.newPage();
+          try { return await checkGeneratedModule(page, baseURL); }
+          finally { await page.close(); }
+        } finally { await context.close(); }
       } finally { await browser.close(); }
     });
   } catch (error) {
