@@ -73,3 +73,17 @@ npm run test:source
 ```
 
 No generated patch is automatically applied or committed. The original source file is left intact. The script only supports the named fixture and refuses unexpected source preconditions, fields or model-supplied JavaScript. It checks JSX syntax using Vite's esbuild transformation. **Syntax validation is not browser verification:** the manifest deliberately marks `checks.browser=false` and `approved=false`. A separate browser-runner for this exact generated JSX and authorized apply/PR workflow are still outstanding. CI generates the patch with a handwritten fixture; it does not demonstrate live AI success.
+
+## Actual generated JSX browser verification
+
+After `npm run source:patch`, run `npm run source:verify`. This checks SHA-256 integrity against the original fixture and the generated source, diff, HTML preview and React entry point **before** browser execution. It then serves a local preview, imports the generated JSX module, runs axe checks against WCAG 2/2.1 A/AA tags, verifies label associations, blocks required-field and invalid-email submission, and confirms keyboard-driven client-side success.
+
+On completion, the untracked `repair-artifacts/browser-evidence.json` includes case-level checks, failure messages, and the generated source hash. **No original code is modified and no patch is auto-applied.** The original manifest stays `approved:false` and `checks.browser:false`; the separate evidence report holds the browser result.
+
+```bash
+CI=true npm run source:patch -- --fixture=known  # handwritten reference for tests
+npm run source:verify
+npm run test:integrity
+```
+
+CI exercises this with a handwritten known-good candidate, not a genuine AI response. Live AI model scoring, validation against unfamiliar source files and strong process/container isolation remain future work. Never use this local Vite browser runner to execute third-party repository scripts or arbitrary LLM-authored JavaScript.

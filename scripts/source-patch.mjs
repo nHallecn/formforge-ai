@@ -62,15 +62,32 @@ export async function prepareSourcePatch(candidate, { root = resolve(new URL('..
   const outputDir = resolve(root, 'repair-artifacts');
   await mkdir(outputDir, { recursive: true });
   const patch = unifiedDiff(original, generated);
+  // A preview imports the GENERATED MODULE, not the JSON-driven CandidateForm.
+  const previewEntry = `import React from 'react';
+import { createRoot } from 'react-dom/client';
+import ScholarshipForm from './ScholarshipForm.jsx';
+createRoot(document.getElementById('generated-root')).render(
+  <main><h1>Generated source verification</h1><ScholarshipForm /></main>
+);
+`;
+  const previewHTML = `<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FormForge generated source verification</title></head>
+<body><div id="generated-root"></div><script type="module" src="/repair-artifacts/preview-entry.jsx"></script></body></html>
+`;
+  await transformWithEsbuild(previewEntry, 'preview-entry.jsx', { loader: 'jsx' });
   const manifest = {
     version: 1, mode: 'review_only', target: SOURCE_PATH,
     originalSha256: sha256(original), candidateSha256: sha256(generated),
-    patchSha256: sha256(patch), generatedWith: 'validated_template',
+    patchSha256: sha256(patch), previewSha256: sha256(previewHTML),
+    previewEntrySha256: sha256(previewEntry), generatedWith: 'validated_template',
     checks: { schema: true, jsxSyntax: true, browser: false },
     approved: false,
   };
   await writeFile(resolve(outputDir, 'ScholarshipForm.jsx'), generated, { mode: 0o600 });
   await writeFile(resolve(outputDir, 'ScholarshipForm.patch'), patch, { mode: 0o600 });
+  await writeFile(resolve(outputDir, 'preview.html'), previewHTML, { mode: 0o600 });
+  await writeFile(resolve(outputDir, 'preview-entry.jsx'), previewEntry, { mode: 0o600 });
   await writeFile(resolve(outputDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n', { mode: 0o600 });
   return manifest;
 }
