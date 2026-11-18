@@ -17,16 +17,18 @@ export async function inspectPatch(root = rootDefault) {
       manifest.checks?.schema !== true || manifest.checks?.jsxSyntax !== true) {
     throw new Error('Invalid or unexpectedly approved patch manifest');
   }
-  const [original, generated, patch, html] = await Promise.all([
+  const [original, generated, patch, html, entry] = await Promise.all([
     readFile(resolve(root, SOURCE_PATH), 'utf8'),
     readFile(resolve(output, 'ScholarshipForm.jsx'), 'utf8'),
     readFile(resolve(output, 'ScholarshipForm.patch'), 'utf8'),
     readFile(resolve(output, 'preview.html'), 'utf8'),
+    readFile(resolve(output, 'preview-entry.jsx'), 'utf8'),
   ]);
   if (sha256(original) !== manifest.originalSha256 ||
       sha256(generated) !== manifest.candidateSha256 ||
       sha256(patch) !== manifest.patchSha256 ||
-      sha256(html) !== manifest.previewSha256) {
+      sha256(html) !== manifest.previewSha256 ||
+      sha256(entry) !== manifest.previewEntrySha256) {
     throw new Error('Source repair artifact integrity check failed');
   }
   return { manifest, generated, output };
